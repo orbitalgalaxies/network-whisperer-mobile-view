@@ -1,0 +1,11 @@
+
+{
+  "appId": "app.lovable.14ab2426822248a585f5737c8ec9a305",
+  "appName": "NetPulse",
+  "webDir": "dist",
+  "bundledWebRuntime": false,
+  "server": {
+    "url": "https://14ab2426-8222-48a5-85f5-737c8ec9a305.lovableproject.com?forceHideBadge=true",
+    "cleartext": true
+  }
+}
