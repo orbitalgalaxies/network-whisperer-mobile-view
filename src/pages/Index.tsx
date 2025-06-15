@@ -2,6 +2,7 @@
 import Header from '@/components/Header';
 import WifiScanner from '@/components/WifiScanner';
 import BluetoothScanner from '@/components/BluetoothScanner';
+import TrafficMonitor from '@/components/TrafficMonitor';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const Index = () => {
@@ -10,15 +11,19 @@ const Index = () => {
       <Header />
       <main className="p-4 md:p-6">
         <Tabs defaultValue="wifi" className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
+          <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="wifi">Wi-Fi Analyzer</TabsTrigger>
             <TabsTrigger value="bluetooth">Bluetooth Scanner</TabsTrigger>
+            <TabsTrigger value="traffic">Traffic Monitor</TabsTrigger>
           </TabsList>
           <TabsContent value="wifi" className="mt-4">
             <WifiScanner />
           </TabsContent>
           <TabsContent value="bluetooth" className="mt-4">
             <BluetoothScanner />
+          </TabsContent>
+          <TabsContent value="traffic" className="mt-4">
+            <TrafficMonitor />
           </TabsContent>
         </Tabs>
       </main>
