@@ -2,9 +2,8 @@
 import { Network } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
+import { Badge, badgeVariants } from '@/components/ui/badge';
 import { VariantProps } from 'class-variance-authority';
-import { buttonVariants } from './ui/button';
 
 const mockPacketData = [
   { id: 1, timestamp: '15:34:01.123', source: '192.168.1.10:54321', destination: '104.18.32.227:443', protocol: 'TCP', length: 124, info: 'HTTPS Handshake' },
@@ -16,7 +15,7 @@ const mockPacketData = [
   { id: 7, timestamp: '15:34:03.112', source: '192.168.1.10:1900', destination: '239.255.255.250:1900', protocol: 'SSDP', length: 345, info: 'M-SEARCH * HTTP/1.1' },
 ];
 
-const getProtocolBadgeVariant = (protocol: string): VariantProps<typeof buttonVariants>['variant'] => {
+const getProtocolBadgeVariant = (protocol: string): VariantProps<typeof badgeVariants>['variant'] => {
   switch (protocol.toUpperCase()) {
     case 'TCP':
     case 'TLSV1.3':
