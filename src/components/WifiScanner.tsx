@@ -1,8 +1,7 @@
-
 import { Wifi, BarChart2, Star } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, Bar } from 'recharts';
 
 const mockWifiNetworks = [
   { ssid: 'HomeNetwork_5G', signal: -45, security: 'WPA2', channel: 149, channelWidth: 80 },
@@ -39,10 +38,25 @@ const getChannelRecommendation = (networks: typeof mockWifiNetworks) => {
     const best5 = fiveGhzChannels.find(ch => !channelsInUse5.has(ch));
 
     return { best2_4, best5 };
-}
+};
+
+const getChannelUsage = (networks: typeof mockWifiNetworks) => {
+    const channelCounts = networks.reduce((acc, net) => {
+        acc[net.channel] = (acc[net.channel] || 0) + 1;
+        return acc;
+    }, {} as Record<number, number>);
+
+    return Object.entries(channelCounts)
+        .map(([channel, count]) => ({
+            channel: `Ch ${channel}`,
+            networks: count,
+        }))
+        .sort((a, b) => parseInt(a.channel.slice(3)) - parseInt(b.channel.slice(3)));
+};
 
 const WifiScanner = () => {
     const { best2_4, best5 } = getChannelRecommendation(mockWifiNetworks);
+    const channelUsageData = getChannelUsage(mockWifiNetworks);
 
     return (
         <div className="space-y-6">
@@ -112,6 +126,36 @@ const WifiScanner = () => {
                             <Line type="monotone" dataKey="MyPhone_Hotspot" stroke="#82ca9d" name="MyPhone_Hotspot" dot={false} />
                             <Line type="monotone" dataKey="xfinitywifi" stroke="#ffc658" name="xfinitywifi" dot={false} />
                         </LineChart>
+                    </ResponsiveContainer>
+                </CardContent>
+            </Card>
+
+            <Card>
+                 <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                        <BarChart2 size={24} />
+                        Channel Usage
+                    </CardTitle>
+                    <CardDescription>
+                        Number of networks found on each channel.
+                    </CardDescription>
+                </CardHeader>
+                <CardContent className="h-64">
+                    <ResponsiveContainer width="100%" height="100%">
+                        <BarChart data={channelUsageData}>
+                            <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                            <XAxis dataKey="channel" stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} />
+                            <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} allowDecimals={false} width={30} />
+                            <Tooltip
+                                contentStyle={{
+                                    backgroundColor: 'hsl(var(--background))',
+                                    borderColor: 'hsl(var(--border))',
+                                    borderRadius: 'var(--radius)',
+                                }}
+                                cursor={{fill: 'hsl(var(--muted))'}}
+                            />
+                            <Bar dataKey="networks" fill="hsl(var(--primary))" name="# of Networks" radius={[4, 4, 0, 0]} />
+                        </BarChart>
                     </ResponsiveContainer>
                 </CardContent>
             </Card>
