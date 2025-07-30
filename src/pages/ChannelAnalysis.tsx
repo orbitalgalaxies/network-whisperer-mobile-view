@@ -162,12 +162,18 @@ const ChannelAnalysis = () => {
             <CardContent>
               <div className="h-64">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={utilizationData}>
+                  <BarChart data={utilizationData} onClick={(data) => {
+                    if (data && data.activeLabel) {
+                      const channelNum = data.activeLabel.replace('Ch ', '');
+                      const element = document.getElementById(`channel-${channelNum}`);
+                      element?.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="channel" />
                     <YAxis />
                     <Tooltip />
-                    <Bar dataKey="utilization" fill="hsl(var(--primary))" />
+                    <Bar dataKey="utilization" fill="hsl(var(--primary))" className="cursor-pointer" />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -208,7 +214,7 @@ const ChannelAnalysis = () => {
             const utilizationColor = getUtilizationColor(channel.utilization);
             
             return (
-              <Card key={channel.channel} className="bg-secondary/50">
+              <Card key={channel.channel} id={`channel-${channel.channel}`} className="bg-secondary/50">
                 <CardHeader>
                   <div className="flex justify-between items-start">
                     <div>
