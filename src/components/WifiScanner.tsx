@@ -1,4 +1,4 @@
-import { Wifi, BarChart2, Star, Activity, Radio, Zap } from 'lucide-react';
+import { Wifi, BarChart2, Star, Activity, Radio, Zap, BarChart3 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, Bar } from 'recharts';
@@ -231,14 +231,14 @@ const WifiScanner = () => {
                 </CardContent>
             </Card>
 
-            <Card>
+            <Card className="cursor-pointer hover:bg-accent/50 transition-colors" onClick={() => navigate('/channel-analysis')}>
                  <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                        <BarChart2 size={24} />
+                        <BarChart3 size={24} />
                         Channel Usage
                     </CardTitle>
                     <CardDescription>
-                        Number of networks found on each channel.
+                        Number of networks found on each channel. Click for advanced channel analysis.
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="h-64">
