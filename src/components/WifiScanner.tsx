@@ -2,6 +2,7 @@ import { Wifi, BarChart2, Star, Activity, Radio, Zap } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, Bar } from 'recharts';
+import { useNavigate } from 'react-router-dom';
 
 const mockWifiNetworks = [
   { 
@@ -136,6 +137,7 @@ const getCQIQuality = (cqi: number) => {
 };
 
 const WifiScanner = () => {
+    const navigate = useNavigate();
     const { best2_4, best5 } = getChannelRecommendation(mockWifiNetworks);
     const channelUsageData = getChannelUsage(mockWifiNetworks);
 
@@ -197,14 +199,14 @@ const WifiScanner = () => {
                 </CardContent>
             </Card>
 
-            <Card>
+            <Card className="cursor-pointer hover:bg-accent/50 transition-colors" onClick={() => navigate('/advanced-metrics')}>
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                         <BarChart2 size={24} />
                         Signal Strength History
                     </CardTitle>
                     <CardDescription>
-                        Signal strength (dBm) of the strongest networks over the last 30 seconds.
+                        Signal strength (dBm) of the strongest networks over the last 30 seconds. Click to view advanced metrics.
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="h-64">
@@ -259,104 +261,6 @@ const WifiScanner = () => {
                 </CardContent>
             </Card>
 
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <Activity size={24} />
-                        Advanced Signal Quality Metrics
-                    </CardTitle>
-                    <CardDescription>
-                        Professional-grade signal analysis for network optimization.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                        {mockWifiNetworks.slice(0, 3).map((net) => {
-                            const snrQuality = getSignalQuality(net.snr);
-                            const berQuality = getBERQuality(net.ber);
-                            const cqiQuality = getCQIQuality(net.cqi);
-                            
-                            return (
-                                <Card key={net.ssid} className="bg-secondary/50">
-                                    <CardHeader className="pb-3">
-                                        <CardTitle className="text-lg">{net.ssid}</CardTitle>
-                                    </CardHeader>
-                                    <CardContent className="space-y-3">
-                                        <div className="flex justify-between items-center">
-                                            <span className="text-sm text-muted-foreground">SNR:</span>
-                                            <span className={`font-semibold ${snrQuality.color}`}>{net.snr} dB</span>
-                                        </div>
-                                        <div className="flex justify-between items-center">
-                                            <span className="text-sm text-muted-foreground">Noise Floor:</span>
-                                            <span className="font-semibold">{net.noiseFloor} dBm</span>
-                                        </div>
-                                        <div className="flex justify-between items-center">
-                                            <span className="text-sm text-muted-foreground">BER:</span>
-                                            <span className={`font-semibold ${berQuality.color}`}>{net.ber.toFixed(3)}</span>
-                                        </div>
-                                        <div className="flex justify-between items-center">
-                                            <span className="text-sm text-muted-foreground">MCS Index:</span>
-                                            <span className="font-semibold">{net.mcs}</span>
-                                        </div>
-                                        <div className="flex justify-between items-center">
-                                            <span className="text-sm text-muted-foreground">CQI:</span>
-                                            <span className={`font-semibold ${cqiQuality.color}`}>{net.cqi}</span>
-                                        </div>
-                                        <div className="flex justify-between items-center">
-                                            <span className="text-sm text-muted-foreground">RSRQ:</span>
-                                            <span className="font-semibold">{net.rsrq} dB</span>
-                                        </div>
-                                    </CardContent>
-                                </Card>
-                            );
-                        })}
-                    </div>
-                    
-                    <div className="mt-6 p-4 bg-muted/50 rounded-lg">
-                        <h4 className="font-semibold mb-3 flex items-center gap-2">
-                            <Radio size={18} />
-                            Quality Metrics Guide
-                        </h4>
-                        <div className="grid gap-2 md:grid-cols-2 text-sm">
-                            <div>
-                                <strong>SNR (Signal-to-Noise Ratio):</strong>
-                                <div className="text-muted-foreground">
-                                    • 30+ dB: Excellent<br/>
-                                    • 20-29 dB: Good<br/>
-                                    • 10-19 dB: Fair<br/>
-                                    • &lt;10 dB: Poor
-                                </div>
-                            </div>
-                            <div>
-                                <strong>BER (Bit Error Rate):</strong>
-                                <div className="text-muted-foreground">
-                                    • ≤0.001: Excellent<br/>
-                                    • ≤0.01: Good<br/>
-                                    • ≤0.05: Fair<br/>
-                                    • &gt;0.05: Poor
-                                </div>
-                            </div>
-                            <div>
-                                <strong>CQI (Channel Quality):</strong>
-                                <div className="text-muted-foreground">
-                                    • 12-15: Excellent<br/>
-                                    • 8-11: Good<br/>
-                                    • 5-7: Fair<br/>
-                                    • 1-4: Poor
-                                </div>
-                            </div>
-                            <div>
-                                <strong>Noise Floor:</strong>
-                                <div className="text-muted-foreground">
-                                    Typical: -90 to -100 dBm<br/>
-                                    Lower values indicate<br/>
-                                    less ambient noise
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
 
             <Card>
                  <CardHeader>
