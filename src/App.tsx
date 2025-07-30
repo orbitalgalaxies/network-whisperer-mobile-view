@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import AdvancedMetrics from "./pages/AdvancedMetrics";
 import ChannelAnalysis from "./pages/ChannelAnalysis";
+import ChannelDetail from "./pages/ChannelDetail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -20,6 +21,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/advanced-metrics" element={<AdvancedMetrics />} />
           <Route path="/channel-analysis" element={<ChannelAnalysis />} />
+          <Route path="/channel/:channelId" element={<ChannelDetail />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -165,8 +165,7 @@ const ChannelAnalysis = () => {
                   <BarChart data={utilizationData} onClick={(data) => {
                     if (data && data.activeLabel) {
                       const channelNum = data.activeLabel.replace('Ch ', '');
-                      const element = document.getElementById(`channel-${channelNum}`);
-                      element?.scrollIntoView({ behavior: 'smooth' });
+                      navigate(`/channel/${channelNum}`);
                     }
                   }}>
                     <CartesianGrid strokeDasharray="3 3" />
