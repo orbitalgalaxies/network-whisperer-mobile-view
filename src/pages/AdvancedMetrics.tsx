@@ -75,7 +75,7 @@ const AdvancedMetrics = () => {
                 <div className="mb-6">
                     <Button 
                         variant="ghost" 
-                        onClick={() => navigate(-1)}
+                        onClick={() => navigate('/')}
                         className="mb-4"
                     >
                         <ArrowLeft size={16} className="mr-2" />
