@@ -250,7 +250,7 @@ const ChannelAnalysis = () => {
           const utilizationColor = getUtilizationColor(channel.utilization);
           return <Card key={channel.channel} id={`channel-${channel.channel}`} className="bg-secondary/50">
                 <CardHeader>
-                  <div className="flex justify-between items-start">
+                  <div className="flex justify-between items-start my-0 py-0 mx-[2px] px-px">
                     <div>
                       <CardTitle className="flex items-center gap-2">
                         <Radio size={24} />
@@ -318,7 +318,7 @@ const ChannelAnalysis = () => {
 
                   {/* Access Points on this Channel */}
                   <div className="py-0 my-0">
-                    <h4 className="font-semibold mb-3 flex items-center gap-2">
+                    <h4 className="font-semibold mb-3 flex items-center gap-2 mx-0 px-[7px] py-[3px] my-[7px]">
                       <Wifi size={18} />
                       Access Points on Channel {channel.channel}
                     </h4>
