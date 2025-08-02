@@ -161,11 +161,12 @@ const TrafficMonitor = () => {
                 dot={(props: any) => {
                   const data = trafficHistory[props.payload?.index];
                   if (data?.anomaly) {
-                    return <circle cx={props.cx} cy={props.cy} r="4" fill="#ef4444" stroke="#ef4444" strokeWidth="2" />;
+                    return <circle cx={props.cx} cy={props.cy} r="6" fill="#ef4444" stroke="#ffffff" strokeWidth="2" />;
                   }
-                  return null;
+                  return <circle cx={props.cx} cy={props.cy} r="2" fill="hsl(var(--chart-1))" />;
                 }}
                 strokeWidth={2}
+                activeDot={{ r: 4, stroke: "hsl(var(--chart-1))", strokeWidth: 2 }}
               />
               <Line 
                 type="monotone" 
@@ -175,11 +176,12 @@ const TrafficMonitor = () => {
                 dot={(props: any) => {
                   const data = trafficHistory[props.payload?.index];
                   if (data?.anomaly) {
-                    return <circle cx={props.cx} cy={props.cy} r="4" fill="#ef4444" stroke="#ef4444" strokeWidth="2" />;
+                    return <circle cx={props.cx} cy={props.cy} r="6" fill="#ef4444" stroke="#ffffff" strokeWidth="2" />;
                   }
-                  return null;
+                  return <circle cx={props.cx} cy={props.cy} r="2" fill="hsl(var(--chart-2))" />;
                 }}
                 strokeWidth={2}
+                activeDot={{ r: 4, stroke: "hsl(var(--chart-2))", strokeWidth: 2 }}
               />
             </LineChart>
           </ResponsiveContainer>
