@@ -317,7 +317,7 @@ const ChannelAnalysis = () => {
                     </div>}
 
                   {/* Access Points on this Channel */}
-                  <div>
+                  <div className="py-0 my-0">
                     <h4 className="font-semibold mb-3 flex items-center gap-2">
                       <Wifi size={18} />
                       Access Points on Channel {channel.channel}
