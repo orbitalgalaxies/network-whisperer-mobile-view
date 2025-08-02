@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { Upload, Download, Laptop, Smartphone, Tv2, Server, AlertTriangle, TrendingUp, TrendingDown } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -66,7 +67,43 @@ const getDeviceIcon = (type: string) => {
 
 
 const TrafficMonitor = () => {
-  const anomalyData = detectAnomalies(trafficHistory);
+  const [liveData, setLiveData] = useState(trafficHistory);
+  const [currentUpload, setCurrentUpload] = useState(15.7);
+  const [currentDownload, setCurrentDownload] = useState(88.2);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = new Date();
+      const timeLabel = now.toLocaleTimeString();
+      
+      // Simulate speed changes (±1-3 Mbps randomly)
+      const uploadChange = (Math.random() - 0.5) * 6; // -3 to +3 Mbps
+      const downloadChange = (Math.random() - 0.5) * 6; // -3 to +3 Mbps
+      
+      const newUpload = Math.max(1, currentUpload + uploadChange);
+      const newDownload = Math.max(5, currentDownload + downloadChange);
+      
+      setCurrentUpload(newUpload);
+      setCurrentDownload(newDownload);
+      
+      // Check for anomalies (sudden spikes/drops)
+      const isAnomaly = Math.abs(uploadChange) > 2 || Math.abs(downloadChange) > 2;
+      
+      setLiveData(prevData => {
+        const newData = [...prevData.slice(1), {
+          time: timeLabel,
+          upload: newUpload,
+          download: newDownload,
+          anomaly: isAnomaly
+        }];
+        return newData;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [currentUpload, currentDownload]);
+
+  const anomalyData = detectAnomalies(liveData);
   
   return (
     <div className="space-y-6">
@@ -88,7 +125,7 @@ const TrafficMonitor = () => {
             <Upload className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">15.7 Mbps</div>
+            <div className="text-2xl font-bold">{currentUpload.toFixed(1)} Mbps</div>
             <p className="text-xs text-muted-foreground">Real-time upload bandwidth</p>
             <div className="flex items-center gap-1 mt-2 text-xs">
               <TrendingUp className="h-3 w-3 text-muted-foreground" />
@@ -102,7 +139,7 @@ const TrafficMonitor = () => {
             <Download className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">88.2 Mbps</div>
+            <div className="text-2xl font-bold">{currentDownload.toFixed(1)} Mbps</div>
             <p className="text-xs text-muted-foreground">Real-time download bandwidth</p>
             <div className="flex items-center gap-1 mt-2 text-xs">
               <TrendingDown className="h-3 w-3 text-muted-foreground" />
@@ -125,7 +162,7 @@ const TrafficMonitor = () => {
         </CardHeader>
         <CardContent className="h-80">
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={trafficHistory}>
+            <LineChart data={liveData}>
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
               <XAxis 
                 dataKey="time" 
@@ -159,7 +196,7 @@ const TrafficMonitor = () => {
                 stroke="hsl(var(--chart-1))" 
                 name="Upload" 
                 dot={(props: any) => {
-                  const data = trafficHistory[props.payload?.index];
+                  const data = liveData[props.payload?.index];
                   if (data?.anomaly) {
                     return <circle cx={props.cx} cy={props.cy} r="6" fill="#ef4444" stroke="#ffffff" strokeWidth="2" />;
                   }
@@ -174,7 +211,7 @@ const TrafficMonitor = () => {
                 stroke="hsl(var(--chart-2))" 
                 name="Download" 
                 dot={(props: any) => {
-                  const data = trafficHistory[props.payload?.index];
+                  const data = liveData[props.payload?.index];
                   if (data?.anomaly) {
                     return <circle cx={props.cx} cy={props.cy} r="6" fill="#ef4444" stroke="#ffffff" strokeWidth="2" />;
                   }
