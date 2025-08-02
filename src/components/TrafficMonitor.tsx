@@ -198,7 +198,17 @@ const TrafficMonitor = () => {
                 dot={(props: any) => {
                   const data = liveData[props.payload?.index];
                   if (data?.anomaly) {
-                    return <circle cx={props.cx} cy={props.cy} r="6" fill="#ef4444" stroke="#ffffff" strokeWidth="2" />;
+                    return (
+                      <circle 
+                        cx={props.cx} 
+                        cy={props.cy} 
+                        r="8" 
+                        fill="#dc2626" 
+                        stroke="#ffffff" 
+                        strokeWidth="3"
+                        className="animate-pulse"
+                      />
+                    );
                   }
                   return <circle cx={props.cx} cy={props.cy} r="2" fill="hsl(var(--chart-1))" />;
                 }}
@@ -213,7 +223,17 @@ const TrafficMonitor = () => {
                 dot={(props: any) => {
                   const data = liveData[props.payload?.index];
                   if (data?.anomaly) {
-                    return <circle cx={props.cx} cy={props.cy} r="6" fill="#ef4444" stroke="#ffffff" strokeWidth="2" />;
+                    return (
+                      <circle 
+                        cx={props.cx} 
+                        cy={props.cy} 
+                        r="8" 
+                        fill="#dc2626" 
+                        stroke="#ffffff" 
+                        strokeWidth="3"
+                        className="animate-pulse"
+                      />
+                    );
                   }
                   return <circle cx={props.cx} cy={props.cy} r="2" fill="hsl(var(--chart-2))" />;
                 }}
