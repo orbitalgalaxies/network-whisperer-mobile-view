@@ -307,7 +307,7 @@ const ChannelAnalysis = () => {
                     </div>}
 
                   {/* Hidden Networks Alert */}
-                  {channel.hiddenNetworks > 0 && <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+                  {channel.hiddenNetworks > 0 && <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800 py-px px-[9px] my-[6px]">
                       <div className="flex items-center gap-2">
                         <Eye size={16} className="text-blue-600" />
                         <span className="font-medium text-blue-800 dark:text-blue-300">
