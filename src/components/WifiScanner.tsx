@@ -73,13 +73,13 @@ const mockWifiNetworks = [
 ];
 
 const signalHistory = [
-  { time: '30s', HomeNetwork_5G: -48, xfinitywifi: -65, MyPhone_Hotspot: -55 },
-  { time: '25s', HomeNetwork_5G: -46, xfinitywifi: -66, MyPhone_Hotspot: -53 },
-  { time: '20s', HomeNetwork_5G: -47, xfinitywifi: -68, MyPhone_Hotspot: -54 },
-  { time: '15s', HomeNetwork_5G: -45, xfinitywifi: -67, MyPhone_Hotspot: -52 },
-  { time: '10s', HomeNetwork_5G: -46, xfinitywifi: -65, MyPhone_Hotspot: -51 },
-  { time: '5s', HomeNetwork_5G: -45, xfinitywifi: -67, MyPhone_Hotspot: -52 },
-  { time: 'now', HomeNetwork_5G: -45, xfinitywifi: -67, MyPhone_Hotspot: -52 },
+  { time: '30s', HomeNetwork_5G: -48, xfinitywifi: -65, MyPhone_Hotspot: -55, noiseFloor: -96 },
+  { time: '25s', HomeNetwork_5G: -46, xfinitywifi: -66, MyPhone_Hotspot: -53, noiseFloor: -95 },
+  { time: '20s', HomeNetwork_5G: -47, xfinitywifi: -68, MyPhone_Hotspot: -54, noiseFloor: -97 },
+  { time: '15s', HomeNetwork_5G: -45, xfinitywifi: -67, MyPhone_Hotspot: -52, noiseFloor: -95 },
+  { time: '10s', HomeNetwork_5G: -46, xfinitywifi: -65, MyPhone_Hotspot: -51, noiseFloor: -96 },
+  { time: '5s', HomeNetwork_5G: -45, xfinitywifi: -67, MyPhone_Hotspot: -52, noiseFloor: -95 },
+  { time: 'now', HomeNetwork_5G: -45, xfinitywifi: -67, MyPhone_Hotspot: -52, noiseFloor: -95 },
 ];
 
 const getChannelRecommendation = (networks: typeof mockWifiNetworks) => {
@@ -226,6 +226,7 @@ const WifiScanner = () => {
                             <Line type="monotone" dataKey="HomeNetwork_5G" stroke="#8884d8" name="HomeNetwork_5G" dot={false} />
                             <Line type="monotone" dataKey="MyPhone_Hotspot" stroke="#82ca9d" name="MyPhone_Hotspot" dot={false} />
                             <Line type="monotone" dataKey="xfinitywifi" stroke="#ffc658" name="xfinitywifi" dot={false} />
+                            <Line type="monotone" dataKey="noiseFloor" stroke="#ff7c7c" name="Noise Floor" dot={false} strokeDasharray="5 5" />
                         </LineChart>
                     </ResponsiveContainer>
                 </CardContent>
