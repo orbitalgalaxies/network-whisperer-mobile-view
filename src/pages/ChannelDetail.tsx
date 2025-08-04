@@ -335,7 +335,7 @@ const ChannelDetail = () => {
               Detailed information about all detected access points
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="rounded-md bg-gray-950">
             <Collapsible open={networksExpanded} onOpenChange={setNetworksExpanded}>
               <CollapsibleTrigger className="w-full">
                 <div className="flex items-center justify-between">
