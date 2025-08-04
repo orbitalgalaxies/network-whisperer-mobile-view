@@ -1,8 +1,10 @@
-import { ArrowLeft, Wifi, Radio, Signal, Users, Clock, Eye, AlertTriangle, BarChart3, Activity } from 'lucide-react';
+import { ArrowLeft, Wifi, Radio, Signal, Users, Clock, Eye, AlertTriangle, BarChart3, Activity, ChevronDown } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 
 const mockChannelData = {
@@ -109,6 +111,7 @@ const getUtilizationColor = (utilization: number) => {
 const ChannelDetail = () => {
   const navigate = useNavigate();
   const { channelId } = useParams();
+  const [metricsExpanded, setMetricsExpanded] = useState(true);
   
   const channel = mockChannelData[channelId as keyof typeof mockChannelData];
   
@@ -178,38 +181,56 @@ const ChannelDetail = () => {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-6">
-              <div className="text-center p-3 bg-muted/50 rounded-lg">
-                <Signal size={20} className="mx-auto mb-1" />
-                <div className="text-sm text-muted-foreground">Signal</div>
-                <div className="font-semibold">{channel.signalStrength} dBm</div>
+          <Collapsible 
+            open={metricsExpanded}
+            onOpenChange={setMetricsExpanded}
+          >
+            <CollapsibleTrigger className="w-full">
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-muted-foreground">Channel Metrics</span>
+                <ChevronDown 
+                  size={16} 
+                  className={`transition-transform ${
+                    metricsExpanded ? 'rotate-180' : ''
+                  }`}
+                />
               </div>
-              <div className="text-center p-3 bg-muted/50 rounded-lg">
-                <AlertTriangle size={20} className="mx-auto mb-1" />
-                <div className="text-sm text-muted-foreground">Noise</div>
-                <div className="font-semibold">{channel.noiseLevel} dBm</div>
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-6 mt-4">
+                <div className="text-center p-3 bg-muted/50 rounded-lg">
+                  <Signal size={20} className="mx-auto mb-1" />
+                  <div className="text-sm text-muted-foreground">Signal</div>
+                  <div className="font-semibold">{channel.signalStrength} dBm</div>
+                </div>
+                <div className="text-center p-3 bg-muted/50 rounded-lg">
+                  <AlertTriangle size={20} className="mx-auto mb-1" />
+                  <div className="text-sm text-muted-foreground">Noise</div>
+                  <div className="font-semibold">{channel.noiseLevel} dBm</div>
+                </div>
+                <div className="text-center p-3 bg-muted/50 rounded-lg">
+                  <Activity size={20} className="mx-auto mb-1" />
+                  <div className="text-sm text-muted-foreground">Beacon Activity</div>
+                  <div className="font-semibold">{channel.beaconActivity}%</div>
+                </div>
+                <div className="text-center p-3 bg-muted/50 rounded-lg">
+                  <Users size={20} className="mx-auto mb-1" />
+                  <div className="text-sm text-muted-foreground">Clients</div>
+                  <div className="font-semibold">{channel.clientDensity}</div>
+                </div>
+                <div className="text-center p-3 bg-muted/50 rounded-lg">
+                  <BarChart3 size={20} className="mx-auto mb-1" />
+                  <div className="text-sm text-muted-foreground">Throughput</div>
+                  <div className="font-semibold">{channel.throughput} Mbps</div>
+                </div>
+                <div className="text-center p-3 bg-muted/50 rounded-lg">
+                  <Clock size={20} className="mx-auto mb-1" />
+                  <div className="text-sm text-muted-foreground">Latency</div>
+                  <div className="font-semibold">{channel.latency} ms</div>
+                </div>
               </div>
-              <div className="text-center p-3 bg-muted/50 rounded-lg">
-                <Activity size={20} className="mx-auto mb-1" />
-                <div className="text-sm text-muted-foreground">Beacon Activity</div>
-                <div className="font-semibold">{channel.beaconActivity}%</div>
-              </div>
-              <div className="text-center p-3 bg-muted/50 rounded-lg">
-                <Users size={20} className="mx-auto mb-1" />
-                <div className="text-sm text-muted-foreground">Clients</div>
-                <div className="font-semibold">{channel.clientDensity}</div>
-              </div>
-              <div className="text-center p-3 bg-muted/50 rounded-lg">
-                <BarChart3 size={20} className="mx-auto mb-1" />
-                <div className="text-sm text-muted-foreground">Throughput</div>
-                <div className="font-semibold">{channel.throughput} Mbps</div>
-              </div>
-              <div className="text-center p-3 bg-muted/50 rounded-lg">
-                <Clock size={20} className="mx-auto mb-1" />
-                <div className="text-sm text-muted-foreground">Latency</div>
-                <div className="font-semibold">{channel.latency} ms</div>
-              </div>
-            </div>
+            </CollapsibleContent>
+          </Collapsible>
           </CardContent>
         </Card>
 
