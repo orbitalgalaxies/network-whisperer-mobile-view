@@ -71,6 +71,7 @@ const getCQIQuality = (cqi: number) => {
 const AdvancedMetrics = () => {
     const navigate = useNavigate();
     const [expandedCards, setExpandedCards] = useState<string[]>([]);
+    const [guideExpanded, setGuideExpanded] = useState(false);
 
     return (
         <div className="min-h-screen bg-background text-foreground">
@@ -165,49 +166,66 @@ const AdvancedMetrics = () => {
                             })}
                         </div>
                         
-                        <div className="mt-6 p-4 bg-muted/50 rounded-lg">
-                            <h4 className="font-semibold mb-3 flex items-center gap-2">
-                                <Radio size={18} />
-                                Quality Metrics Guide
-                            </h4>
-                            <div className="grid gap-2 md:grid-cols-2 text-sm">
-                                <div>
-                                    <strong>SNR (Signal-to-Noise Ratio):</strong>
-                                    <div className="text-muted-foreground">
-                                        • 30+ dB: Excellent<br/>
-                                        • 20-29 dB: Good<br/>
-                                        • 10-19 dB: Fair<br/>
-                                        • &lt;10 dB: Poor
+                        <Collapsible 
+                            open={guideExpanded}
+                            onOpenChange={setGuideExpanded}
+                        >
+                            <div className="mt-6 p-4 bg-muted/50 rounded-lg">
+                                <CollapsibleTrigger className="w-full">
+                                    <div className="flex items-center justify-between">
+                                        <h4 className="font-semibold flex items-center gap-2">
+                                            <Radio size={18} />
+                                            Quality Metrics Guide
+                                        </h4>
+                                        <ChevronDown 
+                                            size={16} 
+                                            className={`transition-transform ${
+                                                guideExpanded ? 'rotate-180' : ''
+                                            }`}
+                                        />
                                     </div>
-                                </div>
-                                <div>
-                                    <strong>BER (Bit Error Rate):</strong>
-                                    <div className="text-muted-foreground">
-                                        • ≤0.001: Excellent<br/>
-                                        • ≤0.01: Good<br/>
-                                        • ≤0.05: Fair<br/>
-                                        • &gt;0.05: Poor
+                                </CollapsibleTrigger>
+                                <CollapsibleContent>
+                                    <div className="grid gap-2 md:grid-cols-2 text-sm mt-3">
+                                        <div>
+                                            <strong>SNR (Signal-to-Noise Ratio):</strong>
+                                            <div className="text-muted-foreground">
+                                                • 30+ dB: Excellent<br/>
+                                                • 20-29 dB: Good<br/>
+                                                • 10-19 dB: Fair<br/>
+                                                • &lt;10 dB: Poor
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <strong>BER (Bit Error Rate):</strong>
+                                            <div className="text-muted-foreground">
+                                                • ≤0.001: Excellent<br/>
+                                                • ≤0.01: Good<br/>
+                                                • ≤0.05: Fair<br/>
+                                                • &gt;0.05: Poor
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <strong>CQI (Channel Quality):</strong>
+                                            <div className="text-muted-foreground">
+                                                • 12-15: Excellent<br/>
+                                                • 8-11: Good<br/>
+                                                • 5-7: Fair<br/>
+                                                • 1-4: Poor
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <strong>Noise Floor:</strong>
+                                            <div className="text-muted-foreground">
+                                                Typical: -90 to -100 dBm<br/>
+                                                Lower values indicate<br/>
+                                                less ambient noise
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div>
-                                    <strong>CQI (Channel Quality):</strong>
-                                    <div className="text-muted-foreground">
-                                        • 12-15: Excellent<br/>
-                                        • 8-11: Good<br/>
-                                        • 5-7: Fair<br/>
-                                        • 1-4: Poor
-                                    </div>
-                                </div>
-                                <div>
-                                    <strong>Noise Floor:</strong>
-                                    <div className="text-muted-foreground">
-                                        Typical: -90 to -100 dBm<br/>
-                                        Lower values indicate<br/>
-                                        less ambient noise
-                                    </div>
-                                </div>
+                                </CollapsibleContent>
                             </div>
-                        </div>
+                        </Collapsible>
                     </CardContent>
                 </Card>
             </div>
