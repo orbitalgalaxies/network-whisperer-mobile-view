@@ -1,7 +1,9 @@
-import { Activity, Radio, ArrowLeft } from 'lucide-react';
+import { Activity, Radio, ArrowLeft, ChevronDown } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 const mockWifiNetworks = [
   { 
@@ -68,6 +70,7 @@ const getCQIQuality = (cqi: number) => {
 
 const AdvancedMetrics = () => {
     const navigate = useNavigate();
+    const [expandedCards, setExpandedCards] = useState<string[]>([]);
 
     return (
         <div className="min-h-screen bg-background text-foreground">
@@ -103,37 +106,61 @@ const AdvancedMetrics = () => {
                                 const cqiQuality = getCQIQuality(net.cqi);
                                 
                                 return (
-                                    <Card key={net.ssid} className="bg-secondary/50">
-                                        <CardHeader className="pb-3">
-                                            <CardTitle className="text-lg">{net.ssid}</CardTitle>
-                                        </CardHeader>
-                                        <CardContent className="space-y-3">
-                                            <div className="flex justify-between items-center">
-                                                <span className="text-sm text-muted-foreground">SNR:</span>
-                                                <span className={`font-semibold ${snrQuality.color}`}>{net.snr} dB</span>
-                                            </div>
-                                            <div className="flex justify-between items-center">
-                                                <span className="text-sm text-muted-foreground">Noise Floor:</span>
-                                                <span className="font-semibold">{net.noiseFloor} dBm</span>
-                                            </div>
-                                            <div className="flex justify-between items-center">
-                                                <span className="text-sm text-muted-foreground">BER:</span>
-                                                <span className={`font-semibold ${berQuality.color}`}>{net.ber.toFixed(3)}</span>
-                                            </div>
-                                            <div className="flex justify-between items-center">
-                                                <span className="text-sm text-muted-foreground">MCS Index:</span>
-                                                <span className="font-semibold">{net.mcs}</span>
-                                            </div>
-                                            <div className="flex justify-between items-center">
-                                                <span className="text-sm text-muted-foreground">CQI:</span>
-                                                <span className={`font-semibold ${cqiQuality.color}`}>{net.cqi}</span>
-                                            </div>
-                                            <div className="flex justify-between items-center">
-                                                <span className="text-sm text-muted-foreground">RSRQ:</span>
-                                                <span className="font-semibold">{net.rsrq} dB</span>
-                                            </div>
-                                        </CardContent>
-                                    </Card>
+                                    <Collapsible 
+                                        key={net.ssid}
+                                        open={expandedCards.includes(net.ssid)}
+                                        onOpenChange={(open) => {
+                                            setExpandedCards(prev => 
+                                                open 
+                                                    ? [...prev, net.ssid]
+                                                    : prev.filter(id => id !== net.ssid)
+                                            );
+                                        }}
+                                    >
+                                        <Card className="bg-secondary/50">
+                                            <CardHeader className="pb-3">
+                                                <CollapsibleTrigger className="w-full">
+                                                    <div className="flex items-center justify-between">
+                                                        <CardTitle className="text-lg">{net.ssid}</CardTitle>
+                                                        <ChevronDown 
+                                                            size={16} 
+                                                            className={`transition-transform ${
+                                                                expandedCards.includes(net.ssid) ? 'rotate-180' : ''
+                                                            }`}
+                                                        />
+                                                    </div>
+                                                </CollapsibleTrigger>
+                                            </CardHeader>
+                                            <CollapsibleContent>
+                                                <CardContent className="space-y-3">
+                                                    <div className="flex justify-between items-center">
+                                                        <span className="text-sm text-muted-foreground">SNR:</span>
+                                                        <span className={`font-semibold ${snrQuality.color}`}>{net.snr} dB</span>
+                                                    </div>
+                                                    <div className="flex justify-between items-center">
+                                                        <span className="text-sm text-muted-foreground">Noise Floor:</span>
+                                                        <span className="font-semibold">{net.noiseFloor} dBm</span>
+                                                    </div>
+                                                    <div className="flex justify-between items-center">
+                                                        <span className="text-sm text-muted-foreground">BER:</span>
+                                                        <span className={`font-semibold ${berQuality.color}`}>{net.ber.toFixed(3)}</span>
+                                                    </div>
+                                                    <div className="flex justify-between items-center">
+                                                        <span className="text-sm text-muted-foreground">MCS Index:</span>
+                                                        <span className="font-semibold">{net.mcs}</span>
+                                                    </div>
+                                                    <div className="flex justify-between items-center">
+                                                        <span className="text-sm text-muted-foreground">CQI:</span>
+                                                        <span className={`font-semibold ${cqiQuality.color}`}>{net.cqi}</span>
+                                                    </div>
+                                                    <div className="flex justify-between items-center">
+                                                        <span className="text-sm text-muted-foreground">RSRQ:</span>
+                                                        <span className="font-semibold">{net.rsrq} dB</span>
+                                                    </div>
+                                                </CardContent>
+                                            </CollapsibleContent>
+                                        </Card>
+                                    </Collapsible>
                                 );
                             })}
                         </div>
