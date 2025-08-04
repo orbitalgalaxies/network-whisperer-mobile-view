@@ -166,6 +166,7 @@ const ChannelDetail = () => {
     channelId
   } = useParams();
   const [metricsExpanded, setMetricsExpanded] = useState(true);
+  const [networksExpanded, setNetworksExpanded] = useState(true);
   const channel = mockChannelData[channelId as keyof typeof mockChannelData];
   if (!channel) {
     return <div className="min-h-screen bg-background text-foreground flex items-center justify-center">
@@ -335,26 +336,36 @@ const ChannelDetail = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
-              {channel.networks.map((network, idx) => <div key={idx} className="flex justify-between items-center p-4 bg-muted/30 rounded-lg">
-                  <div className="flex-1">
-                    <div className="font-medium text-lg">
-                      {network.ssid || <span className="italic text-muted-foreground">Hidden Network</span>}
-                    </div>
-                    <div className="text-sm text-muted-foreground space-y-1">
-                      <div>BSSID: {network.bssid}</div>
-                      <div className="flex gap-4">
-                        <span>Vendor: {network.vendor}</span>
-                        <span>Security: {network.security}</span>
+            <Collapsible open={networksExpanded} onOpenChange={setNetworksExpanded}>
+              <CollapsibleTrigger className="w-full">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">Network List</span>
+                  <ChevronDown size={16} className={`transition-transform ${networksExpanded ? 'rotate-180' : ''}`} />
+                </div>
+              </CollapsibleTrigger>
+              <CollapsibleContent>
+                <div className="space-y-4 mt-4">
+                  {channel.networks.map((network, idx) => <div key={idx} className="flex justify-between items-center p-4 bg-muted/30 rounded-lg">
+                      <div className="flex-1">
+                        <div className="font-medium text-lg">
+                          {network.ssid || <span className="italic text-muted-foreground">Hidden Network</span>}
+                        </div>
+                        <div className="text-sm text-muted-foreground space-y-1">
+                          <div>BSSID: {network.bssid}</div>
+                          <div className="flex gap-4">
+                            <span>Vendor: {network.vendor}</span>
+                            <span>Security: {network.security}</span>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <div className="font-semibold text-lg">{network.signal} dBm</div>
-                    <div className="text-sm text-muted-foreground">Signal Strength</div>
-                  </div>
-                </div>)}
-            </div>
+                      <div className="text-right">
+                        <div className="font-semibold text-lg">{network.signal} dBm</div>
+                        <div className="text-sm text-muted-foreground">Signal Strength</div>
+                      </div>
+                    </div>)}
+                </div>
+              </CollapsibleContent>
+            </Collapsible>
           </CardContent>
         </Card>
 
