@@ -194,6 +194,7 @@ const getCQIQuality = (cqi: number) => {
 const WifiScanner = () => {
   const navigate = useNavigate();
   const [networksExpanded, setNetworksExpanded] = useState(true);
+  const [signalHistoryExpanded, setSignalHistoryExpanded] = useState(true);
   const {
     best2_4,
     best5
@@ -274,26 +275,38 @@ const WifiScanner = () => {
                         Signal strength (dBm) of the strongest networks over the last 30 seconds. Click to view advanced metrics.
                     </CardDescription>
                 </CardHeader>
-                <CardContent className="h-64 bg-gray-950">
-                    <ResponsiveContainer width="100%" height="100%">
-                        <LineChart data={signalHistory}>
-                            <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                            <XAxis dataKey="time" stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} />
-                            <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} domain={[-90, -30]} />
-                            <Tooltip contentStyle={{
-              backgroundColor: 'hsl(var(--background))',
-              borderColor: 'hsl(var(--border))',
-              borderRadius: 'var(--radius)'
-            }} />
-                            <Legend wrapperStyle={{
-              color: 'hsl(var(--foreground))'
-            }} />
-                            <Line type="monotone" dataKey="HomeNetwork_5G" stroke="#8884d8" name="HomeNetwork_5G" dot={false} />
-                            <Line type="monotone" dataKey="MyPhone_Hotspot" stroke="#82ca9d" name="MyPhone_Hotspot" dot={false} />
-                            <Line type="monotone" dataKey="xfinitywifi" stroke="#ffc658" name="xfinitywifi" dot={false} />
-                            <Line type="monotone" dataKey="noiseFloor" stroke="#ff7c7c" name="Noise Floor" dot={false} strokeDasharray="5 5" />
-                        </LineChart>
-                    </ResponsiveContainer>
+                <CardContent className="rounded-md bg-gray-950">
+                    <Collapsible open={signalHistoryExpanded} onOpenChange={setSignalHistoryExpanded}>
+                        <CollapsibleTrigger className="w-full">
+                            <div className="flex items-center justify-between">
+                                <span className="text-sm text-muted-foreground">Signal History Chart</span>
+                                <ChevronDown size={16} className={`transition-transform ${signalHistoryExpanded ? 'rotate-180' : ''}`} />
+                            </div>
+                        </CollapsibleTrigger>
+                        <CollapsibleContent>
+                            <div className="h-64 mt-4">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <LineChart data={signalHistory}>
+                                        <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                                        <XAxis dataKey="time" stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} />
+                                        <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} domain={[-90, -30]} />
+                                        <Tooltip contentStyle={{
+                          backgroundColor: 'hsl(var(--background))',
+                          borderColor: 'hsl(var(--border))',
+                          borderRadius: 'var(--radius)'
+                        }} />
+                                        <Legend wrapperStyle={{
+                          color: 'hsl(var(--foreground))'
+                        }} />
+                                        <Line type="monotone" dataKey="HomeNetwork_5G" stroke="#8884d8" name="HomeNetwork_5G" dot={false} />
+                                        <Line type="monotone" dataKey="MyPhone_Hotspot" stroke="#82ca9d" name="MyPhone_Hotspot" dot={false} />
+                                        <Line type="monotone" dataKey="xfinitywifi" stroke="#ffc658" name="xfinitywifi" dot={false} />
+                                        <Line type="monotone" dataKey="noiseFloor" stroke="#ff7c7c" name="Noise Floor" dot={false} strokeDasharray="5 5" />
+                                    </LineChart>
+                                </ResponsiveContainer>
+                            </div>
+                        </CollapsibleContent>
+                    </Collapsible>
                 </CardContent>
             </Card>
 
