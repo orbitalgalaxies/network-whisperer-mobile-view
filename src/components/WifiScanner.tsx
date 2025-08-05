@@ -1,8 +1,10 @@
-import { Wifi, BarChart2, Star, Activity, Radio, Zap, BarChart3 } from 'lucide-react';
+import { Wifi, BarChart2, Star, Activity, Radio, Zap, BarChart3, ChevronDown } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 const mockWifiNetworks = [{
   ssid: 'HomeNetwork_5G',
   signal: -45,
@@ -191,6 +193,7 @@ const getCQIQuality = (cqi: number) => {
 };
 const WifiScanner = () => {
   const navigate = useNavigate();
+  const [networksExpanded, setNetworksExpanded] = useState(true);
   const {
     best2_4,
     best5
@@ -205,49 +208,59 @@ const WifiScanner = () => {
                     </CardTitle>
                 </CardHeader>
                 <CardContent className="rounded-md bg-gray-950">
-                    <Table>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead>SSID</TableHead>
-                                <TableHead>Signal (dBm)</TableHead>
-                                <TableHead>SNR (dB)</TableHead>
-                                <TableHead>Channel</TableHead>
-                                <TableHead className="hidden md:table-cell">Security</TableHead>
-                                <TableHead className="hidden lg:table-cell">MCS</TableHead>
-                                <TableHead className="hidden xl:table-cell">CQI</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {mockWifiNetworks.sort((a, b) => b.signal - a.signal).map(net => {
-              const snrQuality = getSignalQuality(net.snr);
-              const cqiQuality = getCQIQuality(net.cqi);
-              return <TableRow key={net.ssid}>
-                                        <TableCell className="font-semibold">{net.ssid}</TableCell>
-                                        <TableCell>
-                                            <div className="flex items-center gap-2 text-primary">
-                                                <BarChart2 size={16} />
-                                                {net.signal}
-                                            </div>
-                                        </TableCell>
-                                        <TableCell>
-                                            <div className="flex items-center gap-2">
-                                                <span className={snrQuality.color}>{net.snr}</span>
-                                                <span className={`text-xs ${snrQuality.color}`}>({snrQuality.quality})</span>
-                                            </div>
-                                        </TableCell>
-                                        <TableCell>{net.channel}</TableCell>
-                                        <TableCell className="hidden md:table-cell">{net.security}</TableCell>
-                                        <TableCell className="hidden lg:table-cell">{net.mcs}</TableCell>
-                                        <TableCell className="hidden xl:table-cell">
-                                            <div className="flex items-center gap-1">
-                                                <span className={cqiQuality.color}>{net.cqi}</span>
-                                                <span className={`text-xs ${cqiQuality.color}`}>({cqiQuality.quality})</span>
-                                            </div>
-                                        </TableCell>
-                                    </TableRow>;
-            })}
-                        </TableBody>
-                    </Table>
+                    <Collapsible open={networksExpanded} onOpenChange={setNetworksExpanded}>
+                        <CollapsibleTrigger className="w-full">
+                            <div className="flex items-center justify-between">
+                                <span className="text-sm text-muted-foreground">Network List</span>
+                                <ChevronDown size={16} className={`transition-transform ${networksExpanded ? 'rotate-180' : ''}`} />
+                            </div>
+                        </CollapsibleTrigger>
+                        <CollapsibleContent>
+                            <Table className="mt-4">
+                                <TableHeader>
+                                    <TableRow>
+                                        <TableHead>SSID</TableHead>
+                                        <TableHead>Signal (dBm)</TableHead>
+                                        <TableHead>SNR (dB)</TableHead>
+                                        <TableHead>Channel</TableHead>
+                                        <TableHead className="hidden md:table-cell">Security</TableHead>
+                                        <TableHead className="hidden lg:table-cell">MCS</TableHead>
+                                        <TableHead className="hidden xl:table-cell">CQI</TableHead>
+                                    </TableRow>
+                                </TableHeader>
+                                <TableBody>
+                                    {mockWifiNetworks.sort((a, b) => b.signal - a.signal).map(net => {
+                      const snrQuality = getSignalQuality(net.snr);
+                      const cqiQuality = getCQIQuality(net.cqi);
+                      return <TableRow key={net.ssid}>
+                                                <TableCell className="font-semibold">{net.ssid}</TableCell>
+                                                <TableCell>
+                                                    <div className="flex items-center gap-2 text-primary">
+                                                        <BarChart2 size={16} />
+                                                        {net.signal}
+                                                    </div>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <div className="flex items-center gap-2">
+                                                        <span className={snrQuality.color}>{net.snr}</span>
+                                                        <span className={`text-xs ${snrQuality.color}`}>({snrQuality.quality})</span>
+                                                    </div>
+                                                </TableCell>
+                                                <TableCell>{net.channel}</TableCell>
+                                                <TableCell className="hidden md:table-cell">{net.security}</TableCell>
+                                                <TableCell className="hidden lg:table-cell">{net.mcs}</TableCell>
+                                                <TableCell className="hidden xl:table-cell">
+                                                    <div className="flex items-center gap-1">
+                                                        <span className={cqiQuality.color}>{net.cqi}</span>
+                                                        <span className={`text-xs ${cqiQuality.color}`}>({cqiQuality.quality})</span>
+                                                    </div>
+                                                </TableCell>
+                                            </TableRow>;
+                    })}
+                                </TableBody>
+                            </Table>
+                        </CollapsibleContent>
+                    </Collapsible>
                 </CardContent>
             </Card>
 
