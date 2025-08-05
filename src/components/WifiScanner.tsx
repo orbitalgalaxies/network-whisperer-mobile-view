@@ -3,146 +3,200 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import { useNavigate } from 'react-router-dom';
-
-const mockWifiNetworks = [
-  { 
-    ssid: 'HomeNetwork_5G', 
-    signal: -45, 
-    security: 'WPA2', 
-    channel: 149, 
-    channelWidth: 80, 
-    snr: 35, 
-    noiseFloor: -95, 
-    ber: 0.001, 
-    mcs: 11, 
-    cqi: 14, 
-    rsrq: -8 
-  },
-  { 
-    ssid: 'xfinitywifi', 
-    signal: -67, 
-    security: 'Open', 
-    channel: 6, 
-    channelWidth: 20, 
-    snr: 22, 
-    noiseFloor: -92, 
-    ber: 0.01, 
-    mcs: 7, 
-    cqi: 9, 
-    rsrq: -12 
-  },
-  { 
-    ssid: 'NeighborNet', 
-    signal: -78, 
-    security: 'WPA2/WPA3', 
-    channel: 11, 
-    channelWidth: 20, 
-    snr: 15, 
-    noiseFloor: -93, 
-    ber: 0.05, 
-    mcs: 4, 
-    cqi: 6, 
-    rsrq: -15 
-  },
-  { 
-    ssid: 'MyPhone_Hotspot', 
-    signal: -52, 
-    security: 'WPA3', 
-    channel: 44, 
-    channelWidth: 40, 
-    snr: 28, 
-    noiseFloor: -94, 
-    ber: 0.005, 
-    mcs: 9, 
-    cqi: 12, 
-    rsrq: -10 
-  },
-  { 
-    ssid: 'AnotherNet_2.4G', 
-    signal: -85, 
-    security: 'WPA2', 
-    channel: 6, 
-    channelWidth: 20, 
-    snr: 8, 
-    noiseFloor: -93, 
-    ber: 0.1, 
-    mcs: 2, 
-    cqi: 3, 
-    rsrq: -18 
-  },
-];
-
-const signalHistory = [
-  { time: '30s', HomeNetwork_5G: -48, xfinitywifi: -65, MyPhone_Hotspot: -55, noiseFloor: -96 },
-  { time: '25s', HomeNetwork_5G: -46, xfinitywifi: -66, MyPhone_Hotspot: -53, noiseFloor: -95 },
-  { time: '20s', HomeNetwork_5G: -47, xfinitywifi: -68, MyPhone_Hotspot: -54, noiseFloor: -97 },
-  { time: '15s', HomeNetwork_5G: -45, xfinitywifi: -67, MyPhone_Hotspot: -52, noiseFloor: -95 },
-  { time: '10s', HomeNetwork_5G: -46, xfinitywifi: -65, MyPhone_Hotspot: -51, noiseFloor: -96 },
-  { time: '5s', HomeNetwork_5G: -45, xfinitywifi: -67, MyPhone_Hotspot: -52, noiseFloor: -95 },
-  { time: 'now', HomeNetwork_5G: -45, xfinitywifi: -67, MyPhone_Hotspot: -52, noiseFloor: -95 },
-];
-
+const mockWifiNetworks = [{
+  ssid: 'HomeNetwork_5G',
+  signal: -45,
+  security: 'WPA2',
+  channel: 149,
+  channelWidth: 80,
+  snr: 35,
+  noiseFloor: -95,
+  ber: 0.001,
+  mcs: 11,
+  cqi: 14,
+  rsrq: -8
+}, {
+  ssid: 'xfinitywifi',
+  signal: -67,
+  security: 'Open',
+  channel: 6,
+  channelWidth: 20,
+  snr: 22,
+  noiseFloor: -92,
+  ber: 0.01,
+  mcs: 7,
+  cqi: 9,
+  rsrq: -12
+}, {
+  ssid: 'NeighborNet',
+  signal: -78,
+  security: 'WPA2/WPA3',
+  channel: 11,
+  channelWidth: 20,
+  snr: 15,
+  noiseFloor: -93,
+  ber: 0.05,
+  mcs: 4,
+  cqi: 6,
+  rsrq: -15
+}, {
+  ssid: 'MyPhone_Hotspot',
+  signal: -52,
+  security: 'WPA3',
+  channel: 44,
+  channelWidth: 40,
+  snr: 28,
+  noiseFloor: -94,
+  ber: 0.005,
+  mcs: 9,
+  cqi: 12,
+  rsrq: -10
+}, {
+  ssid: 'AnotherNet_2.4G',
+  signal: -85,
+  security: 'WPA2',
+  channel: 6,
+  channelWidth: 20,
+  snr: 8,
+  noiseFloor: -93,
+  ber: 0.1,
+  mcs: 2,
+  cqi: 3,
+  rsrq: -18
+}];
+const signalHistory = [{
+  time: '30s',
+  HomeNetwork_5G: -48,
+  xfinitywifi: -65,
+  MyPhone_Hotspot: -55,
+  noiseFloor: -96
+}, {
+  time: '25s',
+  HomeNetwork_5G: -46,
+  xfinitywifi: -66,
+  MyPhone_Hotspot: -53,
+  noiseFloor: -95
+}, {
+  time: '20s',
+  HomeNetwork_5G: -47,
+  xfinitywifi: -68,
+  MyPhone_Hotspot: -54,
+  noiseFloor: -97
+}, {
+  time: '15s',
+  HomeNetwork_5G: -45,
+  xfinitywifi: -67,
+  MyPhone_Hotspot: -52,
+  noiseFloor: -95
+}, {
+  time: '10s',
+  HomeNetwork_5G: -46,
+  xfinitywifi: -65,
+  MyPhone_Hotspot: -51,
+  noiseFloor: -96
+}, {
+  time: '5s',
+  HomeNetwork_5G: -45,
+  xfinitywifi: -67,
+  MyPhone_Hotspot: -52,
+  noiseFloor: -95
+}, {
+  time: 'now',
+  HomeNetwork_5G: -45,
+  xfinitywifi: -67,
+  MyPhone_Hotspot: -52,
+  noiseFloor: -95
+}];
 const getChannelRecommendation = (networks: typeof mockWifiNetworks) => {
-    const channelsInUse2_4 = new Set<number>();
-    const channelsInUse5 = new Set<number>();
-
-    networks.forEach(net => {
-        if (net.channel <= 13) {
-            channelsInUse2_4.add(net.channel);
-        } else {
-            channelsInUse5.add(net.channel);
-        }
-    });
-
-    const best2_4 = [1, 6, 11].find(ch => !channelsInUse2_4.has(ch));
-    const fiveGhzChannels = [36, 40, 44, 48, 149, 153, 157, 161];
-    const best5 = fiveGhzChannels.find(ch => !channelsInUse5.has(ch));
-
-    return { best2_4, best5 };
+  const channelsInUse2_4 = new Set<number>();
+  const channelsInUse5 = new Set<number>();
+  networks.forEach(net => {
+    if (net.channel <= 13) {
+      channelsInUse2_4.add(net.channel);
+    } else {
+      channelsInUse5.add(net.channel);
+    }
+  });
+  const best2_4 = [1, 6, 11].find(ch => !channelsInUse2_4.has(ch));
+  const fiveGhzChannels = [36, 40, 44, 48, 149, 153, 157, 161];
+  const best5 = fiveGhzChannels.find(ch => !channelsInUse5.has(ch));
+  return {
+    best2_4,
+    best5
+  };
 };
-
 const getChannelUsage = (networks: typeof mockWifiNetworks) => {
-    const channelCounts = networks.reduce((acc, net) => {
-        acc[net.channel] = (acc[net.channel] || 0) + 1;
-        return acc;
-    }, {} as Record<number, number>);
-
-    return Object.entries(channelCounts)
-        .map(([channel, count]) => ({
-            channel: `Ch ${channel}`,
-            networks: count,
-        }))
-        .sort((a, b) => parseInt(a.channel.slice(3)) - parseInt(b.channel.slice(3)));
+  const channelCounts = networks.reduce((acc, net) => {
+    acc[net.channel] = (acc[net.channel] || 0) + 1;
+    return acc;
+  }, {} as Record<number, number>);
+  return Object.entries(channelCounts).map(([channel, count]) => ({
+    channel: `Ch ${channel}`,
+    networks: count
+  })).sort((a, b) => parseInt(a.channel.slice(3)) - parseInt(b.channel.slice(3)));
 };
-
 const getSignalQuality = (snr: number) => {
-    if (snr >= 30) return { quality: 'Excellent', color: 'text-green-600' };
-    if (snr >= 20) return { quality: 'Good', color: 'text-blue-600' };
-    if (snr >= 10) return { quality: 'Fair', color: 'text-yellow-600' };
-    return { quality: 'Poor', color: 'text-red-600' };
+  if (snr >= 30) return {
+    quality: 'Excellent',
+    color: 'text-green-600'
+  };
+  if (snr >= 20) return {
+    quality: 'Good',
+    color: 'text-blue-600'
+  };
+  if (snr >= 10) return {
+    quality: 'Fair',
+    color: 'text-yellow-600'
+  };
+  return {
+    quality: 'Poor',
+    color: 'text-red-600'
+  };
 };
-
 const getBERQuality = (ber: number) => {
-    if (ber <= 0.001) return { quality: 'Excellent', color: 'text-green-600' };
-    if (ber <= 0.01) return { quality: 'Good', color: 'text-blue-600' };
-    if (ber <= 0.05) return { quality: 'Fair', color: 'text-yellow-600' };
-    return { quality: 'Poor', color: 'text-red-600' };
+  if (ber <= 0.001) return {
+    quality: 'Excellent',
+    color: 'text-green-600'
+  };
+  if (ber <= 0.01) return {
+    quality: 'Good',
+    color: 'text-blue-600'
+  };
+  if (ber <= 0.05) return {
+    quality: 'Fair',
+    color: 'text-yellow-600'
+  };
+  return {
+    quality: 'Poor',
+    color: 'text-red-600'
+  };
 };
-
 const getCQIQuality = (cqi: number) => {
-    if (cqi >= 12) return { quality: 'Excellent', color: 'text-green-600' };
-    if (cqi >= 8) return { quality: 'Good', color: 'text-blue-600' };
-    if (cqi >= 5) return { quality: 'Fair', color: 'text-yellow-600' };
-    return { quality: 'Poor', color: 'text-red-600' };
+  if (cqi >= 12) return {
+    quality: 'Excellent',
+    color: 'text-green-600'
+  };
+  if (cqi >= 8) return {
+    quality: 'Good',
+    color: 'text-blue-600'
+  };
+  if (cqi >= 5) return {
+    quality: 'Fair',
+    color: 'text-yellow-600'
+  };
+  return {
+    quality: 'Poor',
+    color: 'text-red-600'
+  };
 };
-
 const WifiScanner = () => {
-    const navigate = useNavigate();
-    const { best2_4, best5 } = getChannelRecommendation(mockWifiNetworks);
-    const channelUsageData = getChannelUsage(mockWifiNetworks);
-
-    return (
-        <div className="space-y-6">
+  const navigate = useNavigate();
+  const {
+    best2_4,
+    best5
+  } = getChannelRecommendation(mockWifiNetworks);
+  const channelUsageData = getChannelUsage(mockWifiNetworks);
+  return <div className="space-y-6">
             <Card>
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2">
@@ -150,7 +204,7 @@ const WifiScanner = () => {
                         Available Wi-Fi Networks
                     </CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="rounded-md bg-gray-950">
                     <Table>
                         <TableHeader>
                             <TableRow>
@@ -164,11 +218,10 @@ const WifiScanner = () => {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {mockWifiNetworks.sort((a, b) => b.signal - a.signal).map((net) => {
-                                const snrQuality = getSignalQuality(net.snr);
-                                const cqiQuality = getCQIQuality(net.cqi);
-                                return (
-                                    <TableRow key={net.ssid}>
+                            {mockWifiNetworks.sort((a, b) => b.signal - a.signal).map(net => {
+              const snrQuality = getSignalQuality(net.snr);
+              const cqiQuality = getCQIQuality(net.cqi);
+              return <TableRow key={net.ssid}>
                                         <TableCell className="font-semibold">{net.ssid}</TableCell>
                                         <TableCell>
                                             <div className="flex items-center gap-2 text-primary">
@@ -191,9 +244,8 @@ const WifiScanner = () => {
                                                 <span className={`text-xs ${cqiQuality.color}`}>({cqiQuality.quality})</span>
                                             </div>
                                         </TableCell>
-                                    </TableRow>
-                                );
-                            })}
+                                    </TableRow>;
+            })}
                         </TableBody>
                     </Table>
                 </CardContent>
@@ -215,14 +267,14 @@ const WifiScanner = () => {
                             <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                             <XAxis dataKey="time" stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} />
                             <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} domain={[-90, -30]} />
-                            <Tooltip
-                                contentStyle={{
-                                    backgroundColor: 'hsl(var(--background))',
-                                    borderColor: 'hsl(var(--border))',
-                                    borderRadius: 'var(--radius)',
-                                }}
-                            />
-                            <Legend wrapperStyle={{ color: 'hsl(var(--foreground))' }} />
+                            <Tooltip contentStyle={{
+              backgroundColor: 'hsl(var(--background))',
+              borderColor: 'hsl(var(--border))',
+              borderRadius: 'var(--radius)'
+            }} />
+                            <Legend wrapperStyle={{
+              color: 'hsl(var(--foreground))'
+            }} />
                             <Line type="monotone" dataKey="HomeNetwork_5G" stroke="#8884d8" name="HomeNetwork_5G" dot={false} />
                             <Line type="monotone" dataKey="MyPhone_Hotspot" stroke="#82ca9d" name="MyPhone_Hotspot" dot={false} />
                             <Line type="monotone" dataKey="xfinitywifi" stroke="#ffc658" name="xfinitywifi" dot={false} />
@@ -248,14 +300,13 @@ const WifiScanner = () => {
                             <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                             <XAxis dataKey="channel" stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} />
                             <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} allowDecimals={false} width={30} />
-                            <Tooltip
-                                contentStyle={{
-                                    backgroundColor: 'hsl(var(--background))',
-                                    borderColor: 'hsl(var(--border))',
-                                    borderRadius: 'var(--radius)',
-                                }}
-                                cursor={{fill: 'hsl(var(--muted))'}}
-                            />
+                            <Tooltip contentStyle={{
+              backgroundColor: 'hsl(var(--background))',
+              borderColor: 'hsl(var(--border))',
+              borderRadius: 'var(--radius)'
+            }} cursor={{
+              fill: 'hsl(var(--muted))'
+            }} />
                             <Bar dataKey="networks" fill="hsl(var(--primary))" name="# of Networks" radius={[4, 4, 0, 0]} />
                         </BarChart>
                     </ResponsiveContainer>
@@ -286,8 +337,6 @@ const WifiScanner = () => {
                     </div>
                 </CardContent>
             </Card>
-        </div>
-    );
+        </div>;
 };
-
 export default WifiScanner;
