@@ -230,9 +230,9 @@ const WifiScanner = () => {
                                 </TableHeader>
                                 <TableBody>
                                     {mockWifiNetworks.sort((a, b) => b.signal - a.signal).map(net => {
-                      const snrQuality = getSignalQuality(net.snr);
-                      const cqiQuality = getCQIQuality(net.cqi);
-                      return <TableRow key={net.ssid}>
+                  const snrQuality = getSignalQuality(net.snr);
+                  const cqiQuality = getCQIQuality(net.cqi);
+                  return <TableRow key={net.ssid}>
                                                 <TableCell className="font-semibold">{net.ssid}</TableCell>
                                                 <TableCell>
                                                     <div className="flex items-center gap-2 text-primary">
@@ -256,7 +256,7 @@ const WifiScanner = () => {
                                                     </div>
                                                 </TableCell>
                                             </TableRow>;
-                    })}
+                })}
                                 </TableBody>
                             </Table>
                         </CollapsibleContent>
@@ -274,7 +274,7 @@ const WifiScanner = () => {
                         Signal strength (dBm) of the strongest networks over the last 30 seconds. Click to view advanced metrics.
                     </CardDescription>
                 </CardHeader>
-                <CardContent className="h-64">
+                <CardContent className="h-64 bg-gray-950">
                     <ResponsiveContainer width="100%" height="100%">
                         <LineChart data={signalHistory}>
                             <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
