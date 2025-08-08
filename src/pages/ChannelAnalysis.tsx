@@ -1,9 +1,10 @@
-import { ArrowLeft, Wifi, Radio, Signal, Users, Clock, Eye, AlertTriangle, BarChart3, Activity } from 'lucide-react';
+import { ArrowLeft, Wifi, Radio, Signal, Users, Clock, Eye, AlertTriangle, BarChart3, Activity, ChevronDown } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useNavigate } from 'react-router-dom';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from 'recharts';
+import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@/components/ui/collapsible';
 const mockChannelData = [{
   channel: 1,
   band: '2.4GHz',
@@ -316,28 +317,37 @@ const ChannelAnalysis = () => {
                       </div>
                     </div>}
 
-                  {/* Access Points on this Channel */}
-                  <div className="py-0 my-0">
-                    <h4 className="font-semibold mb-3 flex items-center gap-2 mx-0 px-[7px] py-[3px] my-[7px]">
-                      <Wifi size={18} />
-                      Access Points on Channel {channel.channel}
-                    </h4>
-                    <div className="space-y-2">
-                      {channel.networks.map((network, idx) => <div key={idx} className="flex justify-between items-center p-3 bg-muted/30 rounded-lg">
-                          <div>
-                            <div className="font-medium">
-                              {network.ssid || <span className="italic text-muted-foreground">Hidden Network</span>}
+                  {/* Access Points on this Channel (Collapsible) */}
+                  <Collapsible defaultOpen={false}>
+                    <CollapsibleTrigger className="w-full">
+                      <div className="flex items-center justify-between px-[7px] py-[3px] my-[7px]">
+                        <h4 className="font-semibold flex items-center gap-2">
+                          <Wifi size={18} />
+                          Access Points on Channel {channel.channel}
+                        </h4>
+                        <ChevronDown size={16} className="transition-transform" />
+                      </div>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent>
+                      <div className="space-y-2">
+                        {channel.networks.map((network, idx) => (
+                          <div key={idx} className="flex justify-between items-center p-3 bg-muted/30 rounded-lg">
+                            <div>
+                              <div className="font-medium">
+                                {network.ssid || <span className="italic text-muted-foreground">Hidden Network</span>}
+                              </div>
+                              <div className="text-sm text-muted-foreground">
+                                {network.bssid} • {network.vendor} • {network.security}
+                              </div>
                             </div>
-                            <div className="text-sm text-muted-foreground">
-                              {network.bssid} • {network.vendor} • {network.security}
+                            <div className="text-right">
+                              <div className="font-semibold">{network.signal} dBm</div>
                             </div>
                           </div>
-                          <div className="text-right">
-                            <div className="font-semibold">{network.signal} dBm</div>
-                          </div>
-                        </div>)}
-                    </div>
-                  </div>
+                        ))}
+                      </div>
+                    </CollapsibleContent>
+                  </Collapsible>
                 </CardContent>
               </Card>;
         })}
