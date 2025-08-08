@@ -71,3 +71,74 @@ Yes, you can!
 To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
 
 Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+
+---
+
+## About this app
+
+A lightweight network insights UI built with Vite + React + Tailwind + shadcn-ui. It includes:
+- Wi‑Fi scanning and channel insights
+- Bluetooth scanning
+- Traffic monitoring and advanced metrics pages
+
+## Security and LLM guardrails (frontend)
+
+A minimal LLM-defense layer has been added under `src/lib/llm/` to help mitigate prompt-injection and leakage risks when/if an LLM is integrated later.
+
+Implemented now:
+- Heuristics-based risk scoring (inspired by OWASP LLM01): `assessInputRisk()`
+- Input normalization/sanitization: `sanitizeInput()`
+- Canary token injection and leakage detection: `injectCanary()` + `detectCanaryLeak()`
+- One-stop guard wrapper: `guardPrompt()`
+
+Example usage (when wiring an LLM call later):
+```ts
+import { guardPrompt, detectLeak } from "@/lib/llm";
+
+const { allowed, prompt, report, canary } = guardPrompt(userInput, {
+  threshold: 0.6,
+  attachCanary: true,
+});
+if (!allowed) {
+  // Block or ask user to rephrase; `report.findings` explains why
+  return;
+}
+
+// Call your LLM here with `prompt`...
+const responseText = await callYourLLM(prompt);
+
+// Detect canary leakage
+if (detectLeak(responseText, canary)) {
+  // Handle policy violation: mask, log, or drop the response
+}
+```
+
+Note: No backend or LLM provider is configured yet; this guard is provider-agnostic and ready to wrap any future calls.
+
+## Backend integration “backdoors” (future-ready)
+
+This project intentionally keeps provider choices open. You can integrate any of the following without refactoring the UI:
+- Supabase (recommended on Lovable) for auth, DB, storage, Edge Functions, secrets
+- AWS (Lambda/API Gateway, Bedrock, DynamoDB/OpenSearch)
+- GCP (Cloud Run/Functions, Vertex AI, Firestore/BigQuery)
+- Azure (Functions, Azure OpenAI, Cosmos DB/Postgres)
+- External Vector DBs (pgvector, Pinecone, Weaviate, Qdrant)
+- LLM APIs (OpenAI/Azure OpenAI, Anthropic, Google, Perplexity, Mistral, Bedrock)
+
+Suggested architecture when adding a backend:
+- Keep API keys in a server-side secret store (e.g., Supabase Secrets, AWS Secrets Manager). Do not place private keys in the frontend.
+- Create a thin API layer (Edge Function/Cloud Function) that receives the guarded prompt, performs server-side validation, and calls the selected provider.
+- Add pgvector/Pinecone for similarity checks against a corpus of blocked prompts to strengthen injection detection.
+
+## Optional next steps
+
+- VectorDB memory and similarity defenses: store embeddings of known-bad prompts and compare incoming inputs.
+- CI security scanning with Garak: add a job to probe for injection, leakage, toxicity, and jailbreaks.
+- Server-side policy engine: fail closed on high-risk prompts; log events for audit.
+- Rebuff/heuristics expansion: add LLM-based detection and pattern tuning.
+
+## Secrets management
+
+- If using Supabase (native in Lovable), put provider API keys in Supabase Secrets and read them in Edge Functions.
+- If using another platform, store secrets in its managed secret service and expose only server-side endpoints to the frontend.
+- For temporary local testing without a backend, prefer user-supplied public keys and store in `localStorage`—not for production.
