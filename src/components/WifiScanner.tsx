@@ -277,13 +277,13 @@ const WifiScanner = () => {
                 </CardHeader>
                 <CardContent className="rounded-md bg-gray-950">
                     <Collapsible open={signalHistoryExpanded} onOpenChange={setSignalHistoryExpanded}>
-                        <CollapsibleTrigger className="w-full">
+                        <CollapsibleTrigger className="w-full" onClick={(e) => e.stopPropagation()}>
                             <div className="flex items-center justify-between">
                                 <span className="text-sm text-muted-foreground">Signal History Chart</span>
                                 <ChevronDown size={16} className={`transition-transform ${signalHistoryExpanded ? 'rotate-180' : ''}`} />
                             </div>
                         </CollapsibleTrigger>
-                        <CollapsibleContent>
+                        <CollapsibleContent onClick={(e) => e.stopPropagation()}>
                             <div className="h-64 mt-4">
                                 <ResponsiveContainer width="100%" height="100%">
                                     <LineChart data={signalHistory}>
